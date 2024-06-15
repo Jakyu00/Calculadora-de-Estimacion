@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculadora de Estimación por Intervalos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333333;
+        }
+
+        label, button {
+            width: 100%;
+            margin: 5px 0;
+            display: block;
+        }
+
+        input{
+            height: 30px;
+            margin-top: 4px;
+            margin-bottom: 25px;
+            font-size: 16px;
+            width: 100%;
+            border-radius: 5px;
+            border-color: rgb(185, 189, 192);
+        }
+
+        select{
+            margin-bottom: 25px ;
+            height: 40px;
+            width: 70px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+
+        button {
+            background-color: #924eff;
+            color: #ffffff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333333;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="container">
+        <h1>Calculadora de Estimación por Intervalos</h1>
+        <label for="media_muestral">Media Muestral:</label>
+        <input type="number" id="media_muestral" >
+        <br>
+        <label for="tamano_muestra">Tamaño de la Muestra:</label>
+        <input type="number" id="tamano_muestra" class="pinpon" >
+        <br>
+        <label for="desviacion_estandar">Desviación Estándar Poblacional:</label>
+        <input type="number" id="desviacion_estandar" >
+        <br>
+        <label for="nivel_confianza">Nivel de Confianza:</label>
+
+        <select name="select" id="nivel_confianza">
+            <option value="0.90">90%</option>
+            <option value="0.95" selected>95%</option>
+            <option value="0.99">99%</option>
+          </select>
+        <br>
+        
+        <button onclick="calcularEstimaciones()">Calcular</button>
+        <p id="resultado"></p>
+    </div>
+
+
+
+    <script>
+        function calcularEstimaciones() {
+
+
+            // Ok, aqui es donde se ingresan los datos
+            let media_muestral = parseFloat(document.getElementById('media_muestral').value);
+            let tamano_muestra = parseInt(document.getElementById('tamano_muestra').value);
+            let desviacion_estandar = parseFloat(document.getElementById('desviacion_estandar').value);
+            let nivel_confianza = parseFloat(document.getElementById('nivel_confianza').value);
+            
+            // Por si algún dato está imcorrecto o vacio
+            if (isNaN(media_muestral) || isNaN(tamano_muestra) || isNaN(desviacion_estandar) || isNaN(nivel_confianza)) {
+                document.getElementById('resultado').innerText = 'Por favor, ingrese todos los valores correctamente.';
+                return;
+            }
+            
+            // Aqui se busca el valor de Z 
+            let z_value = 1.96; // Vamos a poner el nivel de confianza predeterminado en 95%
+            if (nivel_confianza === 0.90) z_value = 1.65;
+            else if (nivel_confianza === 0.95) z_value = 1.96;
+            else if (nivel_confianza === 0.99) z_value = 2.58;
+            
+            // Se calcula el error estandar dividiendo la desviacion entre la raiz del tamaño de la muestra
+            let error_estandar = desviacion_estandar / Math.sqrt(tamano_muestra);
+            
+            // Calcular el intervalo de confianza
+            let intervalo_confianza = [media_muestral - z_value * error_estandar, media_muestral + z_value * error_estandar];
+            
+            // Aquí se muestran los resultados
+            document.getElementById('resultado').innerText = `El Intervalo de Confianza es: [${intervalo_confianza[0].toFixed(2)}, ${intervalo_confianza[1].toFixed(2)}]`;
+        }
+    </script>
+</body>
+</html>
