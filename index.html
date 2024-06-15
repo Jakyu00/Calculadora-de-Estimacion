@@ -129,7 +129,7 @@
             let intervalo_confianza = [media_muestral - z_value * error_estandar, media_muestral + z_value * error_estandar];
             
             // Aquí se muestran los resultados
-            document.getElementById('resultado').innerText = `El Intervalo de Confianza es: [${intervalo_confianza[0].toFixed(2)}, ${intervalo_confianza[1].toFixed(2)}]`;
+            document.getElementById('resultado').innerText = `El Intervalo de Confianza es aproximadamente: [${intervalo_confianza[0].toFixed(2)}, ${intervalo_confianza[1].toFixed(2)}]`;
         }
     </script>
 </body>
