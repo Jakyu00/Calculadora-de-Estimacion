@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculadora de Estimación Puntual</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333333;
+        }
+
+        label, input, button, textarea {
+            width: 100%;
+            margin: 5px 0;
+            display: block;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Estimación Puntual</h1>
+        <label for="datos_muestra">Datos de la Muestra (separados por comas):</label>
+        <textarea id="datos_muestra" rows="5" placeholder="Ejemplo: 5, 10, 15, 20"></textarea>
+        <button onclick="calcularEstimacionPuntual()">Calcular</button>
+        <p id="resultado"></p>
+    </div>
+
+    <script>
+        function calcularEstimacionPuntual() {
+            // Aqui se obtienen los datos introducidos
+            let datos = document.getElementById('datos_muestra').value.split(',').map(Number);
+            
+            // Validar que todos los datos son números
+            if (datos.some(isNaN)) {
+                document.getElementById('resultado').innerText = 'Por favor, ingrese datos válidos (números separados por comas).';
+                return;
+            }
+
+            // Se calcula la media muestral sumando todos los datos y dividiando entre la cantidad de datos que haya
+            let suma = datos.reduce((a, b) => a + b, 0);
+            let media_muestral = suma / datos.length;
+
+            // Se calcula la desviación estándar muestral usando la formula
+            let suma_cuadrados = datos.reduce((a, b) => a + Math.pow(b - media_muestral, 2), 0);
+            let desviacion_estandar = Math.sqrt(suma_cuadrados / (datos.length - 1));
+
+            // Mostrar los resultados 
+            document.getElementById('resultado').innerText = `Estimación Puntual (Media Muestral): ${media_muestral.toFixed(2)}\nDesviación Estándar: ${desviacion_estandar.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
